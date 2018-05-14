@@ -1,0 +1,17 @@
+#!/bin/bash
+# wrapper for injecting secret environment variables
+#
+# usage:
+#    echo "MYSECRET=5" >> .auth.env
+#    auth env
+#    auth script.py
+#
+# source a .auth.env file in the current directory and execute the next command
+# also try to source from home directory. Variables in the current directory
+# take precidence.
+
+set -o allexport
+test -f $HOME/.auth.env && source $HOME/.auth.env
+test -f $PWD/.auth.env && source $PWD/.auth.env
+set +o allexport
+"$@"
